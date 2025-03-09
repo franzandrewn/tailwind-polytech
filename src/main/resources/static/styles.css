@@ -1,0 +1,7 @@
+@import "tailwindcss";
+.btn {
+    background-color: var(--color-sky-500);
+    &:hover {
+        background-color: var(--color-sky-700);
+    }
+}
