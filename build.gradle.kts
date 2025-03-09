@@ -36,13 +36,14 @@ tasks.withType<Test> {
 }
 
 tasks.register<com.github.gradle.node.npm.task.NpxTask>("tailwind"){
-	inputs.files("./src/main/resources/static/styles.css")
+	inputs.file("./src/main/resources/static/styles.css")
+	inputs.dir("./src/main/resources/templates")
 	dependsOn("npmInstall")
 	command.set("@tailwindcss/cli")
 	args.set(listOf("-i", "./src/main/resources/static/styles.css",
-		"-o" ,"./src/main/resources/static/output.css", "--watch"))
+		"-o" ,"./src/main/resources/static/output.css", "--optimize"))
 
-	outputs.dir("./src/main/resources/static")
+	outputs.file("./src/main/resources/static/output.css")
 }
 
 tasks.register("sync"){
@@ -58,4 +59,13 @@ tasks.register("sync"){
 		}
 	}
 	outputs.dir("build/resources/main")
+}
+
+tasks {
+	compileJava {
+		dependsOn(":tailwind")
+	}
+	processResources {
+		dependsOn(":tailwind")
+	}
 }
